@@ -11,6 +11,8 @@
 
 ```sh
 yarn add @sudoo/jwt
+yarn add @sudoo/token # Peer Dependency
 # Or
 npm install @sudoo/jwt --save
+npm install @sudoo/token --save # Peer Dependency
 ```
