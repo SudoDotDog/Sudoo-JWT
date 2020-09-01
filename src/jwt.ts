@@ -5,26 +5,30 @@
  */
 
 import { SignatureVerifier } from "@sudoo/token";
-import { JWTJoinedHeader } from "./declare";
+import { JWTJoinedHeader, TokenTuple } from "./declare";
 
-export const deconstructJWT = (token: string): [string, string, string] => {
+export const deconstructJWT = (token: string): TokenTuple => {
 
-    const tuple: [string, string, string] = token.split('.') as [string, string, string];
+    const tuple: TokenTuple = token.split('.') as TokenTuple;
 
     return tuple;
 };
 
-export const verifySurfaceTokenPattern = (token: string): boolean => {
+export const verifyTokenPatternByTuple = (tuple: TokenTuple): boolean => {
 
-    const tuple: [string, string, string] = deconstructJWT(token);
     if (tuple.length !== 3) {
         return false;
     }
-
     return true;
 };
 
-export const verifyTokenSignatureByTuple = (tuple: [string, string, string], publicKey: string): boolean => {
+export const verifyTokenPatternByToken = (token: string): boolean => {
+
+    const tuple: TokenTuple = deconstructJWT(token);
+    return verifyTokenPatternByTuple(tuple);
+};
+
+export const verifyTokenSignatureByTuple = (tuple: TokenTuple, publicKey: string): boolean => {
 
     const serializedHeader: string = tuple[0];
     const serializedBody: string = tuple[1];
@@ -42,7 +46,7 @@ export const verifyTokenSignatureByTuple = (tuple: [string, string, string], pub
 
 export const verifyTokenSignatureByToken = (token: string, publicKey: string): boolean => {
 
-    const tuple: [string, string, string] = deconstructJWT(token);
+    const tuple: TokenTuple = deconstructJWT(token);
     if (tuple.length !== 3) {
         return false;
     }

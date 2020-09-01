@@ -11,3 +11,5 @@ export type JWTFixedHeader = {
 };
 
 export type JWTJoinedHeader<Header extends Record<string, any>> = Header & JWTFixedHeader;
+
+export type TokenTuple = [string, string, string];
