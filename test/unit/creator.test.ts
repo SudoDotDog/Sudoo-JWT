@@ -12,7 +12,6 @@ import { MockKeyPairGenerator } from '../mock/generate';
 
 describe('Given {JWTCreator} class', (): void => {
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const chance: Chance.Chance = new Chance('jwt-creator');
 
     let keyPair: MockKeyPairGenerator;
@@ -32,6 +31,14 @@ describe('Given {JWTCreator} class', (): void => {
 
         const creator: JWTCreator = JWTCreator.create(keyPair.private);
 
-        expect(creator).to.be.instanceOf(JWTCreator);
+        const header = {
+            foo: chance.string(),
+        };
+        const body = {
+            bar: chance.string(),
+        };
+
+        const token: string = creator.create(header, body);
+        expect(typeof token).to.be.equal('string');
     });
 });
