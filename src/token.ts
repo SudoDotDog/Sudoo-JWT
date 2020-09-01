@@ -13,6 +13,7 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
     public static instantiateWithoutVerify<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
 
         const tuple: TokenTuple = deconstructJWT(token);
+
         const surfaceVerifyResult: boolean = verifyTokenPatternByTuple(tuple);
         if (!surfaceVerifyResult) {
             return null;
@@ -24,6 +25,7 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
     public static instantiateWithLocalVerify<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string, publicKey: string): JWTToken<Header, Body> | null {
 
         const tuple: TokenTuple = deconstructJWT(token);
+
         const surfaceVerifyResult: boolean = verifyTokenPatternByTuple(tuple);
         if (!surfaceVerifyResult) {
             return null;
