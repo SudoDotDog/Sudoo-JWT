@@ -54,7 +54,16 @@ export const verifyTokenSignatureByToken = (token: string, publicKey: string): b
     return verifyTokenSignatureByTuple(tuple, publicKey);
 };
 
-export const fixJWTHeader = <Header extends Record<string, any>>(header: Header): JWTJoinedHeader<Header> => {
+export const extractJWTHeader = <Header extends Record<string, any>>(header: Header): JWTJoinedHeader<Header> => {
+
+    return {
+        alg: 'RS256',
+        typ: 'JWT',
+        ...header,
+    };
+};
+
+export const extractJWTBody = <Header extends Record<string, any>>(header: Header): JWTJoinedHeader<Header> => {
 
     return {
         alg: 'RS256',
