@@ -29,12 +29,20 @@ export class JWTCreator<Header extends Record<string, any> = any, Body extends R
         const serializedHeader: string = serializeObject(fixedHeader);
         const serializedBody: string = serializeObject(body);
 
-        const joinedContent: string = `${serializedHeader}.${serializedBody}`;
+        const joinedContent: string = [
+            serializedHeader,
+            serializedBody,
+        ].join('.');
 
         const signatureCreator: SignatureCreator = SignatureCreator.create(this._privateKey);
         const signature: string = signatureCreator.sign(joinedContent);
 
-        const completeToken: string = `${joinedContent}.${signature}`;
-        return completeToken;
+        const jwtToken: string = [
+            serializedHeader,
+            serializedBody,
+            signature,
+        ].join('.');
+
+        return jwtToken;
     }
 }
