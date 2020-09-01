@@ -68,13 +68,13 @@ export const extractJWTHeader = <Header extends Record<string, any>>(options: JW
         sub: options.subject,
     };
 
-    const keys: string[] = Object.keys(optionalHeaders);
-    const fixedHeaders: JWTFixedHeader = keys.reduce((previous: JWTFixedHeader, current: string) => {
+    const keys: Array<keyof JWTOptionalHeader> = Object.keys(optionalHeaders) as Array<keyof JWTOptionalHeader>;
+    const fixedHeaders: JWTFixedHeader = keys.reduce((previous: JWTFixedHeader, currentKey: keyof JWTOptionalHeader) => {
 
-        if (typeof optionalHeaders[current] !== 'undefined') {
+        if (typeof optionalHeaders[currentKey] !== 'undefined') {
             return {
                 ...previous,
-                [current]: optionalHeaders[current],
+                [currentKey]: optionalHeaders[currentKey],
             };
         }
         return previous;
