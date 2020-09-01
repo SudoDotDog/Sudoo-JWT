@@ -10,7 +10,7 @@ import { fixJWTHeader } from "./jwt";
 
 export class JWTCreator<Header extends Record<string, any>, Body extends Record<string, any>> {
 
-    public static create<Header extends Record<string, any> = unknown, Body extends Record<string, any> = unknown>(privateKey: string): JWTCreator<Header, Body> {
+    public static create<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(privateKey: string): JWTCreator<Header, Body> {
 
         return new JWTCreator<Header, Body>(privateKey);
     }
