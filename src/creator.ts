@@ -5,8 +5,8 @@
  */
 
 import { serializeObject, SignatureCreator } from "@sudoo/token";
-import { JWTJoinedHeader, JWTCreateOptions } from "./declare";
-import { fixJWTHeader } from "./jwt";
+import { JWTCreateOptions, JWTJoinedHeader } from "./declare";
+import { extractJWTBody, extractJWTHeader } from "./jwt";
 
 export class JWTCreator<Header extends Record<string, any> = any, Body extends Record<string, any> = any> {
 
@@ -24,10 +24,11 @@ export class JWTCreator<Header extends Record<string, any> = any, Body extends R
 
     public create(options: JWTCreateOptions): string {
 
-        const fixedHeader: JWTJoinedHeader<Header> = fixJWTHeader(header);
+        const fixedHeader: JWTJoinedHeader<Header> = extractJWTHeader(options);
+        const fixedBody: Body = extractJWTBody(options);
 
         const serializedHeader: string = serializeObject(fixedHeader);
-        const serializedBody: string = serializeObject(body);
+        const serializedBody: string = serializeObject(fixedBody);
 
         const joinedContent: string = [
             serializedHeader,

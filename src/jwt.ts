@@ -5,7 +5,8 @@
  */
 
 import { SignatureVerifier } from "@sudoo/token";
-import { JWTJoinedHeader, TokenTuple } from "./declare";
+import { JWTCreateOptions, JWTFixedHeader, JWTJoinedHeader, JWTOptionalHeader, TokenTuple } from "./declare";
+import { fixNowDate, fixUndefinableDate } from "./util";
 
 export const deconstructJWT = (token: string): TokenTuple => {
 
@@ -54,20 +55,41 @@ export const verifyTokenSignatureByToken = (token: string, publicKey: string): b
     return verifyTokenSignatureByTuple(tuple, publicKey);
 };
 
-export const extractJWTHeader = <Header extends Record<string, any>>(header: Header): JWTJoinedHeader<Header> => {
+export const extractJWTHeader = <Header extends Record<string, any>>(options: JWTCreateOptions<Header, any>): JWTJoinedHeader<Header> => {
 
-    return {
+    const optionalHeaders: JWTOptionalHeader = {
+
+        aud: options.audience,
+        exp: fixUndefinableDate(options.expirationAt),
+        jti: options.identifier,
+        iat: fixNowDate(options.issuedAt),
+        iss: options.issuer,
+        nbf: fixUndefinableDate(options.availableAt),
+        sub: options.subject,
+    };
+
+    const keys: string[] = Object.keys(optionalHeaders);
+    const fixedHeaders: JWTFixedHeader = keys.reduce((previous: JWTFixedHeader, current: string) => {
+
+        if (typeof optionalHeaders[current] !== 'undefined') {
+            return {
+                ...previous,
+                [current]: optionalHeaders[current],
+            };
+        }
+        return previous;
+    }, {
         alg: 'RS256',
         typ: 'JWT',
-        ...header,
+    });
+
+    return {
+        ...fixedHeaders,
+        ...options.header,
     };
 };
 
-export const extractJWTBody = <Header extends Record<string, any>>(header: Header): JWTJoinedHeader<Header> => {
+export const extractJWTBody = <Body extends Record<string, any>>(options: JWTCreateOptions<any, Body>): Body => {
 
-    return {
-        alg: 'RS256',
-        typ: 'JWT',
-        ...header,
-    };
+    return options.body;
 };
