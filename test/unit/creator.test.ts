@@ -40,5 +40,8 @@ describe('Given {JWTCreator} class', (): void => {
 
         const token: string = creator.create(header, body);
         expect(typeof token).to.be.equal('string');
+
+        console.log(keyPair.public);
+        console.log(token);
     });
 });

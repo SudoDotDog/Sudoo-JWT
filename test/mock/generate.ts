@@ -32,12 +32,9 @@ export class MockKeyPairGenerator {
     }
 
     public get public(): string {
-
         return this._publicKey;
     }
-
     public get private(): string {
-
         return this._privateKey;
     }
 }
