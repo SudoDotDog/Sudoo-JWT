@@ -22,14 +22,14 @@ describe('Given {JWTCreator} class', (): void => {
 
     it('should be able to construct', (): void => {
 
-        const creator: JWTCreator = JWTCreator.create(keyPair.private);
+        const creator: JWTCreator = JWTCreator.create(keyPair.singleLinePrivate);
 
         expect(creator).to.be.instanceOf(JWTCreator);
     });
 
     it('should be able to create token', (): void => {
 
-        const creator: JWTCreator = JWTCreator.create(keyPair.private);
+        const creator: JWTCreator = JWTCreator.create(keyPair.singleLinePrivate);
 
         const header = {
             foo: chance.string(),
@@ -40,8 +40,5 @@ describe('Given {JWTCreator} class', (): void => {
 
         const token: string = creator.create(header, body);
         expect(typeof token).to.be.equal('string');
-
-        console.log(keyPair.public);
-        console.log(token);
     });
 });

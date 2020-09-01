@@ -5,7 +5,7 @@
  * @package Mock
  */
 
-import { generateSingleLineKeyPair, KeyPair } from "@sudoo/token";
+import { convertKeyPairToSingleLine, generateKeyPair, KeyPair } from "@sudoo/token";
 
 export class MockKeyPairGenerator {
 
@@ -20,21 +20,36 @@ export class MockKeyPairGenerator {
         return this._instance;
     }
 
-    private readonly _privateKey: string;
-    private readonly _publicKey: string;
+    private readonly _multiLinePrivateKey: string;
+    private readonly _multiLineLinePublicKey: string;
+
+    private readonly _singleLinePrivateKey: string;
+    private readonly _singleLineLinePublicKey: string;
 
     private constructor() {
 
-        const keyPair: KeyPair = generateSingleLineKeyPair();
+        const keyPair: KeyPair = generateKeyPair();
 
-        this._privateKey = keyPair.private;
-        this._publicKey = keyPair.public;
+        this._multiLinePrivateKey = keyPair.private;
+        this._multiLineLinePublicKey = keyPair.public;
+
+        const singleLineKeyPair: KeyPair = convertKeyPairToSingleLine(keyPair);
+
+        this._singleLinePrivateKey = singleLineKeyPair.private;
+        this._singleLineLinePublicKey = singleLineKeyPair.public;
     }
 
-    public get public(): string {
-        return this._publicKey;
+    public get singleLinePublic(): string {
+        return this._singleLineLinePublicKey;
     }
-    public get private(): string {
-        return this._privateKey;
+    public get singleLinePrivate(): string {
+        return this._singleLinePrivateKey;
+    }
+
+    public get multiLinePublic(): string {
+        return this._multiLineLinePublicKey;
+    }
+    public get multiLinePrivate(): string {
+        return this._multiLinePrivateKey;
     }
 }
