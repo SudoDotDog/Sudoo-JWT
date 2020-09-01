@@ -1,36 +1,27 @@
 /**
  * @author WMXPY
  * @namespace JWT
- * @description Creator
+ * @description Token
  * @package Unit Test
  */
 
 import { expect } from 'chai';
 import * as Chance from 'chance';
 import { JWTCreator } from '../../src';
+import { JWTToken } from '../../src/token';
 import { MockKeyPairGenerator } from '../mock/generate';
 
-describe('Given {JWTCreator} class', (): void => {
+describe('Given {JWTToken} class', (): void => {
 
-    const chance: Chance.Chance = new Chance('jwt-creator');
+    const chance: Chance.Chance = new Chance('jwt-token');
 
     let keyPair: MockKeyPairGenerator;
+    let token: string;
 
     before(() => {
         keyPair = MockKeyPairGenerator.getInstance();
-    });
-
-    it('should be able to construct', (): void => {
 
         const creator: JWTCreator = JWTCreator.instantiate(keyPair.singleLinePrivate);
-
-        expect(creator).to.be.instanceOf(JWTCreator);
-    });
-
-    it('should be able to create token', (): void => {
-
-        const creator: JWTCreator = JWTCreator.instantiate(keyPair.singleLinePrivate);
-
         const header = {
             foo: chance.string(),
         };
@@ -38,7 +29,13 @@ describe('Given {JWTCreator} class', (): void => {
             bar: chance.string(),
         };
 
-        const token: string = creator.create(header, body);
-        expect(typeof token).to.be.equal('string');
+        token = creator.create(header, body);
+    });
+
+    it('should be able to construct', (): void => {
+
+        const creator: JWTToken | null = JWTToken.instantiateWithoutVerify(token);
+
+        expect(creator).to.be.instanceOf(JWTToken);
     });
 });

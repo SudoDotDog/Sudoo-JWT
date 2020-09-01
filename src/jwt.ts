@@ -39,7 +39,7 @@ export const verifyTokenSignatureByTuple = (tuple: TokenTuple, publicKey: string
         serializedBody,
     ].join('.');
 
-    const signatureVerifier: SignatureVerifier = SignatureVerifier.create(publicKey);
+    const signatureVerifier: SignatureVerifier = SignatureVerifier.instantiate(publicKey);
 
     return signatureVerifier.verify(joinedContent, signature);
 };

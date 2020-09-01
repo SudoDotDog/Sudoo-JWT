@@ -10,7 +10,7 @@ import { deconstructJWT, verifyTokenPatternByTuple, verifyTokenSignatureByTuple 
 
 export class JWTToken<Header extends Record<string, any> = any, Body extends Record<string, any> = any> {
 
-    public static createWithoutVerify<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
+    public static instantiateWithoutVerify<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
 
         const tuple: TokenTuple = deconstructJWT(token);
         const surfaceVerifyResult: boolean = verifyTokenPatternByTuple(tuple);
@@ -21,7 +21,7 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
         return new JWTToken<Header, Body>(token);
     }
 
-    public static createWithLocalVerify<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string, publicKey: string): JWTToken<Header, Body> | null {
+    public static instantiateWithLocalVerify<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string, publicKey: string): JWTToken<Header, Body> | null {
 
         const tuple: TokenTuple = deconstructJWT(token);
         const surfaceVerifyResult: boolean = verifyTokenPatternByTuple(tuple);
