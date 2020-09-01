@@ -8,7 +8,7 @@ import { serializeObject, SignatureCreator } from "@sudoo/token";
 import { JWTJoinedHeader } from "./declare";
 import { fixJWTHeader } from "./jwt";
 
-export class JWTCreator<Header extends Record<string, any>, Body extends Record<string, any>> {
+export class JWTCreator<Header extends Record<string, any> = any, Body extends Record<string, any> = any> {
 
     public static create<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(privateKey: string): JWTCreator<Header, Body> {
 
