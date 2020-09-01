@@ -32,7 +32,7 @@ export class JWTCreator<Header extends Record<string, any>, Body extends Record<
         const joinedContent: string = `${serializedHeader}.${serializedBody}`;
 
         const signatureCreator: SignatureCreator = SignatureCreator.create(this._privateKey);
-        const signature: string = signatureCreator.signWebFriendly(joinedContent);
+        const signature: string = signatureCreator.sign(joinedContent);
 
         const completeToken: string = `${joinedContent}.${signature}`;
         return completeToken;
