@@ -41,7 +41,6 @@ describe('Given {JWTCreator} class', (): void => {
             },
         });
 
-        console.log(token);
         expect(typeof token).to.be.equal('string');
     });
 });
