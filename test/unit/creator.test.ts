@@ -31,14 +31,17 @@ describe('Given {JWTCreator} class', (): void => {
 
         const creator: JWTCreator = JWTCreator.instantiate(keyPair.singleLinePrivate);
 
-        const header = {
-            foo: chance.string(),
-        };
-        const body = {
-            bar: chance.string(),
-        };
+        const token: string = creator.create({
 
-        const token: string = creator.create(header, body);
+            header: {
+                foo: chance.string(),
+            },
+            body: {
+                bar: chance.string(),
+            },
+        });
+
+        console.log(token);
         expect(typeof token).to.be.equal('string');
     });
 });

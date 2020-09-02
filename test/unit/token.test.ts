@@ -23,14 +23,16 @@ describe('Given {JWTToken} class', (): void => {
         keyPair = MockKeyPairGenerator.getInstance();
 
         const creator: JWTCreator = JWTCreator.instantiate(keyPair.singleLinePrivate);
-        const header = {
-            foo: chance.string(),
-        };
-        const body = {
-            bar: chance.string(),
-        };
 
-        mockToken = creator.create(header, body);
+        mockToken = creator.create({
+
+            header: {
+                foo: chance.string(),
+            },
+            body: {
+                bar: chance.string(),
+            },
+        });
     });
 
     it('should be able to construct', (): void => {
