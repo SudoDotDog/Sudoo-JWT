@@ -16,3 +16,19 @@ yarn add @sudoo/token # Peer Dependency
 npm install @sudoo/jwt --save
 npm install @sudoo/token --save # Peer Dependency
 ```
+
+## Creator Usage
+
+```ts
+import { JWTCreator } from "@sudoo/jwt";
+
+const creator: JWTCreator = JWTCreator.instantiate("<Private Key>");
+const token: string = creator.create({
+    header: {
+        foo: 'bar',
+    },
+    body: {
+        foo: 'bar',
+    },
+}); // Signed Token
+```
