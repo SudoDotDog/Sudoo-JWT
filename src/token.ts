@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /**
  * @author WMXPY
  * @namespace JWT
@@ -11,6 +10,7 @@ import { deconstructJWT, verifyTokenPatternByTuple, verifyTokenSignatureByTuple 
 
 export class JWTToken<Header extends Record<string, any> = any, Body extends Record<string, any> = any> {
 
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     public static fromToken<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
 
         const tuple: TokenTuple = deconstructJWT(token);
@@ -23,6 +23,7 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
         return new JWTToken<Header, Body>(token);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     public static fromTokenThrowable<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> {
 
         const tuple: TokenTuple = deconstructJWT(token);
