@@ -11,7 +11,7 @@ import { deconstructJWT, verifyTokenPatternByTuple, verifyTokenSignatureByTuple 
 
 export class JWTToken<Header extends Record<string, any> = any, Body extends Record<string, any> = any> {
 
-    public static instantiate<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
+    public static fromToken<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
 
         const tuple: TokenTuple = deconstructJWT(token);
 
@@ -23,7 +23,7 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
         return new JWTToken<Header, Body>(token);
     }
 
-    public static instantiateThrowable<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> {
+    public static fromTokenThrowable<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> {
 
         const tuple: TokenTuple = deconstructJWT(token);
 
@@ -74,7 +74,7 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
         if (typeof this._header.exp !== 'number') {
             return false;
         }
-        return currentTime.getTime() > this._header.exp;
+        return currentTime.getTime() < this._header.exp;
     }
 
     public get rawToken(): string {
