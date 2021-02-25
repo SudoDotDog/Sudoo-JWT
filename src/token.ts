@@ -11,7 +11,7 @@ import { deconstructJWT, verifyTokenPatternByTuple, verifyTokenSignatureByTuple 
 
 export class JWTToken<Header extends Record<string, any> = any, Body extends Record<string, any> = any> {
 
-    public static instantiateWithoutVerify<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
+    public static instantiate<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
 
         const tuple: TokenTuple = deconstructJWT(token);
 
@@ -23,24 +23,20 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
         return new JWTToken<Header, Body>(token);
     }
 
-    public static instantiateWithLocalVerify<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string, publicKey: string): JWTToken<Header, Body> | null {
+    public static instantiateThrowable<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> {
 
         const tuple: TokenTuple = deconstructJWT(token);
 
         const surfaceVerifyResult: boolean = verifyTokenPatternByTuple(tuple);
         if (!surfaceVerifyResult) {
-            return null;
-        }
-
-        const localVerifyResult: boolean = verifyTokenSignatureByTuple(tuple, publicKey);
-        if (!localVerifyResult) {
-            return null;
+            throw new Error("[Sudoo-JWT] Invalid Token");
         }
 
         return new JWTToken<Header, Body>(token);
     }
 
     private readonly _rawToken: string;
+    private readonly _tuple: TokenTuple;
     private readonly _header: JWTJoinedHeader<Header>;
     private readonly _body: Body;
     private readonly _signature: string;
@@ -53,13 +49,39 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
             ? tuple
             : deconstructJWT(rawToken);
 
+        this._tuple = confirmedTuple;
+
         this._header = deserializeObject(confirmedTuple[0]);
         this._body = deserializeObject(confirmedTuple[1]);
         this._signature = confirmedTuple[2];
     }
 
+    public verifySignature(publicKey: string): boolean {
+
+        const localVerifyResult: boolean = verifyTokenSignatureByTuple(
+            this._tuple,
+            publicKey,
+        );
+        return localVerifyResult;
+    }
+
+    public verifyExpiration(currentTime: Date = new Date()): boolean {
+
+        if (typeof this._header.exp === 'string'
+            || this._header.exp === null) {
+            return true;
+        }
+        if (typeof this._header.exp !== 'number') {
+            return false;
+        }
+        return currentTime.getTime() > this._header.exp;
+    }
+
     public get rawToken(): string {
         return this._rawToken;
+    }
+    public get tuple(): TokenTuple {
+        return this._tuple;
     }
     public get header(): JWTJoinedHeader<Header> {
         return this._header;

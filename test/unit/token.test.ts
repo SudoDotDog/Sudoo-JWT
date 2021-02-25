@@ -37,24 +37,25 @@ describe('Given {JWTToken} class', (): void => {
 
     it('should be able to construct', (): void => {
 
-        const token: JWTToken | null = JWTToken.instantiateWithoutVerify(mockToken);
+        const token: JWTToken | null = JWTToken.instantiate(mockToken);
 
         expect(token).to.be.instanceOf(JWTToken);
     });
 
     it('should be able to verify', (): void => {
 
-        const token: JWTToken | null = JWTToken.instantiateWithLocalVerify(mockToken, keyPair.multiLinePublic);
+        const token: JWTToken = JWTToken.instantiateThrowable(mockToken);
+        const verifyResult: boolean = token.verifySignature(keyPair.multiLinePublic);
 
-        expect(token).to.be.instanceOf(JWTToken);
+        expect(verifyResult).to.be.true;
     });
 
     it('should be able to reject if verify failed', (): void => {
 
         const fakeKeyPair: KeyPair = generateKeyPair();
-        const token: JWTToken | null = JWTToken.instantiateWithLocalVerify(mockToken, fakeKeyPair.public);
+        const token: JWTToken = JWTToken.instantiateThrowable(mockToken);
+        const verifyResult: boolean = token.verifySignature(fakeKeyPair.public);
 
-        expect(token).to.be.not.instanceOf(JWTToken);
-        expect(token).to.be.equal(null);
+        expect(verifyResult).to.be.false;
     });
 });
