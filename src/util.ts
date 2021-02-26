@@ -4,6 +4,14 @@
  * @description Util
  */
 
+export const convertJSTimeToUnixTime = (jsTime: number): number => {
+
+    const draftTime: number = jsTime / 1000;
+    const roundedTime: number = Math.floor(draftTime);
+
+    return roundedTime;
+};
+
 export const fixUndefinableDate = (target?: Date): number | undefined => {
 
     if (typeof target === 'undefined') {
@@ -20,7 +28,7 @@ export const fixUndefinableDate = (target?: Date): number | undefined => {
         return undefined;
     }
 
-    return time;
+    return convertJSTimeToUnixTime(time);
 };
 
 export const fixNowDate = (target?: Date): number => {
@@ -39,5 +47,5 @@ export const fixNowDate = (target?: Date): number => {
         return Date.now();
     }
 
-    return time;
+    return convertJSTimeToUnixTime(time);
 };
