@@ -20,8 +20,8 @@ describe('Given {JWTToken} class', (): void => {
     let mockToken: string;
 
     before(() => {
-        keyPair = MockKeyPairGenerator.getInstance();
 
+        keyPair = MockKeyPairGenerator.getInstance();
         const creator: JWTCreator = JWTCreator.instantiate(keyPair.singleLinePrivate);
 
         mockToken = creator.create({
@@ -56,6 +56,56 @@ describe('Given {JWTToken} class', (): void => {
         const verifyResult: boolean = token.verifyExpiration();
 
         expect(verifyResult).to.be.true;
+    });
+
+    it('should be able to verify expiration date with valid exp', (): void => {
+
+        keyPair = MockKeyPairGenerator.getInstance();
+        const creator: JWTCreator = JWTCreator.instantiate(keyPair.singleLinePrivate);
+
+        const tomorrowDate: Date = new Date();
+        tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+
+        const mockTokenWithExpire = creator.create({
+
+            expirationAt: tomorrowDate,
+            header: {
+                foo: chance.string(),
+            },
+            body: {
+                bar: chance.string(),
+            },
+        });
+
+        const token: JWTToken = JWTToken.fromTokenThrowable(mockTokenWithExpire);
+        const verifyResult: boolean = token.verifyExpiration();
+
+        expect(verifyResult).to.be.true;
+    });
+
+    it('should be able to reject expiration date with invalid exp', (): void => {
+
+        keyPair = MockKeyPairGenerator.getInstance();
+        const creator: JWTCreator = JWTCreator.instantiate(keyPair.singleLinePrivate);
+
+        const tomorrowDate: Date = new Date();
+        tomorrowDate.setDate(tomorrowDate.getDate() - 1);
+
+        const mockTokenWithExpire = creator.create({
+
+            expirationAt: tomorrowDate,
+            header: {
+                foo: chance.string(),
+            },
+            body: {
+                bar: chance.string(),
+            },
+        });
+
+        const token: JWTToken = JWTToken.fromTokenThrowable(mockTokenWithExpire);
+        const verifyResult: boolean = token.verifyExpiration();
+
+        expect(verifyResult).to.be.false;
     });
 
     it('should be able to reject if verify failed', (): void => {
