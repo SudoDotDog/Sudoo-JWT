@@ -50,6 +50,14 @@ describe('Given {JWTToken} class', (): void => {
         expect(verifyResult).to.be.true;
     });
 
+    it('should be able to verify expiration date with no exp', (): void => {
+
+        const token: JWTToken = JWTToken.fromTokenThrowable(mockToken);
+        const verifyResult: boolean = token.verifyExpiration();
+
+        expect(verifyResult).to.be.true;
+    });
+
     it('should be able to reject if verify failed', (): void => {
 
         const fakeKeyPair: KeyPair = generateKeyPair();

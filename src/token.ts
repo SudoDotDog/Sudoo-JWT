@@ -7,6 +7,7 @@
 import { deserializeObject } from "@sudoo/token";
 import { JWTJoinedHeader, TokenTuple } from "./declare";
 import { deconstructJWT, verifyTokenPatternByTuple, verifyTokenSignatureByTuple } from "./jwt";
+import { fixUndefinableDate } from "./util";
 
 export class JWTToken<Header extends Record<string, any> = any, Body extends Record<string, any> = any> {
 
@@ -75,7 +76,12 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
         if (typeof this._header.exp !== 'number') {
             return false;
         }
-        return currentTime.getTime() < this._header.exp;
+
+        const fixedDate: number | undefined = fixUndefinableDate(currentTime);
+        if (typeof fixedDate !== 'number') {
+            return false;
+        }
+        return fixedDate < this._header.exp;
     }
 
     public get rawToken(): string {
