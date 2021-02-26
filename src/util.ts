@@ -12,6 +12,11 @@ export const convertJSTimeToUnixTime = (jsTime: number): number => {
     return roundedTime;
 };
 
+export const getCurrentUnixTime = (): number => {
+
+    return convertJSTimeToUnixTime(Date.now());
+};
+
 export const fixUndefinableDate = (target?: Date): number | undefined => {
 
     if (typeof target === 'undefined') {
@@ -34,17 +39,17 @@ export const fixUndefinableDate = (target?: Date): number | undefined => {
 export const fixNowDate = (target?: Date): number => {
 
     if (typeof target === 'undefined') {
-        return Date.now();
+        return getCurrentUnixTime();
     }
 
     if (!target.getTime) {
-        return Date.now();
+        return getCurrentUnixTime();
     }
 
     const time: number = target.getTime();
 
     if (isNaN(time)) {
-        return Date.now();
+        return getCurrentUnixTime();
     }
 
     return convertJSTimeToUnixTime(time);
