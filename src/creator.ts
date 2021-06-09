@@ -23,7 +23,7 @@ export class JWTCreator<Header extends Record<string, any> = any, Body extends R
         this._privateKey = privateKey;
     }
 
-    public create(options: JWTCreateOptions): string {
+    public create(options: JWTCreateOptions<Header, Body>): string {
 
         const fixedHeader: JWTJoinedHeader<Header> = extractJWTHeader(options);
         const fixedBody: Body = extractJWTBody(options);
