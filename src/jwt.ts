@@ -66,6 +66,7 @@ export const extractJWTHeader = <Header extends Record<string, any>>(options: JW
         iss: options.issuer,
         nbf: fixUndefinableDate(options.availableAt),
         sub: options.subject,
+        ver: options.version,
     };
 
     const keys: Array<keyof JWTOptionalHeader> = Object.keys(optionalHeaders) as Array<keyof JWTOptionalHeader>;

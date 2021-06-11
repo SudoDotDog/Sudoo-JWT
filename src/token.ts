@@ -25,7 +25,7 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
     }
 
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    public static fromTokenThrowable<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> {
+    public static fromTokenOrThrow<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> {
 
         const tuple: TokenTuple = deconstructJWT(token);
 
