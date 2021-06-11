@@ -37,7 +37,7 @@ describe('Given {JWTToken} class', (): void => {
 
     it('should be able to construct', (): void => {
 
-        const token: JWTToken | null = JWTToken.fromToken(mockToken);
+        const token: JWTToken | null = JWTToken.fromTokenOrNull(mockToken);
 
         expect(token).to.be.instanceOf(JWTToken);
     });

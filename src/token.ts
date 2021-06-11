@@ -11,8 +11,7 @@ import { fixUndefinableDate } from "./util";
 
 export class JWTToken<Header extends Record<string, any> = any, Body extends Record<string, any> = any> {
 
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    public static fromToken<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
+    public static fromTokenOrNull<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
 
         const tuple: TokenTuple = deconstructJWT(token);
 
@@ -24,17 +23,31 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
         return new JWTToken<Header, Body>(token);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    public static fromTokenOrThrow<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> {
+    public static fromTokenOrUndefined<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | undefined {
 
-        const tuple: TokenTuple = deconstructJWT(token);
+        const instance: JWTToken<Header, Body> | null = JWTToken.fromTokenOrNull<Header, Body>(token);
 
-        const surfaceVerifyResult: boolean = verifyTokenPatternByTuple(tuple);
-        if (!surfaceVerifyResult) {
+        if (instance === null) {
+            return undefined;
+        }
+
+        return instance;
+    }
+
+    public static fromTokenOrThrow<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string, error?: Error): JWTToken<Header, Body> {
+
+
+        const instance: JWTToken<Header, Body> | null = JWTToken.fromTokenOrNull<Header, Body>(token);
+
+        if (instance === null) {
+
+            if (error) {
+                throw error;
+            }
             throw new Error("[Sudoo-JWT] Invalid Token");
         }
 
-        return new JWTToken<Header, Body>(token);
+        return instance;
     }
 
     private readonly _rawToken: string;
