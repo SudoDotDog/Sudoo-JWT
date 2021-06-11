@@ -13,6 +13,7 @@ export type JWTOptionalHeader = {
     readonly iss?: string; // Issuer
     readonly nbf?: number; // Not Before
     readonly sub?: string; // Subject
+    readonly ver?: string; // Version
 };
 
 export type JWTFixedHeader = {
@@ -36,6 +37,7 @@ export type JWTCreateOptions<Header extends Record<string, any> = any, Body exte
     readonly identifier?: string;
     readonly issuer?: string;
     readonly subject?: string;
+    readonly version?: string;
 };
 
 export type TokenTuple = [string, string, string];
