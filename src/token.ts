@@ -58,6 +58,22 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
         this._signature = confirmedTuple[2];
     }
 
+    public get rawToken(): string {
+        return this._rawToken;
+    }
+    public get tuple(): TokenTuple {
+        return this._tuple;
+    }
+    public get header(): JWTJoinedHeader<Header> {
+        return this._header;
+    }
+    public get body(): Body {
+        return this._body;
+    }
+    public get signature(): string {
+        return this._signature;
+    }
+
     public verifySignature(publicKey: string): boolean {
 
         const localVerifyResult: boolean = verifyTokenSignatureByTuple(
@@ -82,21 +98,5 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
             return false;
         }
         return fixedDate < this._header.exp;
-    }
-
-    public get rawToken(): string {
-        return this._rawToken;
-    }
-    public get tuple(): TokenTuple {
-        return this._tuple;
-    }
-    public get header(): JWTJoinedHeader<Header> {
-        return this._header;
-    }
-    public get body(): Body {
-        return this._body;
-    }
-    public get signature(): string {
-        return this._signature;
     }
 }
