@@ -16,6 +16,19 @@ export type JWTOptionalHeader = {
     readonly ver?: string; // Version
 };
 
+export type OptionalVerbalHeaders = {
+
+    readonly availableAt?: Date;
+    readonly expirationAt?: Date;
+    readonly issuedAt?: Date;
+
+    readonly audience?: string;
+    readonly identifier?: string;
+    readonly issuer?: string;
+    readonly subject?: string;
+    readonly version?: string;
+};
+
 export type JWTFixedHeader = {
 
     readonly alg: 'RS256';
@@ -28,16 +41,6 @@ export type JWTCreateOptions<Header extends Record<string, any> = any, Body exte
 
     readonly header: Header;
     readonly body: Body;
-
-    readonly availableAt?: Date;
-    readonly expirationAt?: Date;
-    readonly issuedAt?: Date;
-
-    readonly audience?: string;
-    readonly identifier?: string;
-    readonly issuer?: string;
-    readonly subject?: string;
-    readonly version?: string;
-};
+} & OptionalVerbalHeaders;
 
 export type TokenTuple = [string, string, string];
