@@ -44,7 +44,7 @@ describe('Given {JWTToken} class', (): void => {
 
     it('should be able to verify', (): void => {
 
-        const token: JWTToken = JWTToken.fromTokenThrowable(mockToken);
+        const token: JWTToken = JWTToken.fromTokenOrThrow(mockToken);
         const verifyResult: boolean = token.verifySignature(keyPair.multiLinePublic);
 
         expect(verifyResult).to.be.true;
@@ -52,7 +52,7 @@ describe('Given {JWTToken} class', (): void => {
 
     it('should be able to verify expiration date with no exp', (): void => {
 
-        const token: JWTToken = JWTToken.fromTokenThrowable(mockToken);
+        const token: JWTToken = JWTToken.fromTokenOrThrow(mockToken);
         const verifyResult: boolean = token.verifyExpiration();
 
         expect(verifyResult).to.be.true;
@@ -77,7 +77,7 @@ describe('Given {JWTToken} class', (): void => {
             },
         });
 
-        const token: JWTToken = JWTToken.fromTokenThrowable(mockTokenWithExpire);
+        const token: JWTToken = JWTToken.fromTokenOrThrow(mockTokenWithExpire);
         const verifyResult: boolean = token.verifyExpiration();
 
         expect(verifyResult).to.be.true;
@@ -102,7 +102,7 @@ describe('Given {JWTToken} class', (): void => {
             },
         });
 
-        const token: JWTToken = JWTToken.fromTokenThrowable(mockTokenWithExpire);
+        const token: JWTToken = JWTToken.fromTokenOrThrow(mockTokenWithExpire);
         const verifyResult: boolean = token.verifyExpiration();
 
         expect(verifyResult).to.be.false;
@@ -111,7 +111,7 @@ describe('Given {JWTToken} class', (): void => {
     it('should be able to reject if verify failed', (): void => {
 
         const fakeKeyPair: KeyPair = generateKeyPair();
-        const token: JWTToken = JWTToken.fromTokenThrowable(mockToken);
+        const token: JWTToken = JWTToken.fromTokenOrThrow(mockToken);
         const verifyResult: boolean = token.verifySignature(fakeKeyPair.public);
 
         expect(verifyResult).to.be.false;
