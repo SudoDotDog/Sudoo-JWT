@@ -4,7 +4,7 @@
  * @description JWT
  */
 
-import { deconstructJWTEnsure, extractJWTFixedHeader, JWTFixedHeader, JWTJoinedHeader, TokenTuple, verifyTokenPatternByTuple } from "@sudoo/jwt-config";
+import { deconstructJWTEnsure, extractJWTFixedHeader, formatEncryptedContentByContentStructure, JWTFixedHeader, JWTJoinedHeader, TokenTuple, verifyTokenPatternByTuple } from "@sudoo/jwt-config";
 import { SignatureVerifier } from "@sudoo/token";
 import { JWTCreateOptions } from "./declare";
 
@@ -20,10 +20,10 @@ export const verifyTokenSignatureByTuple = (tuple: TokenTuple, publicKey: string
     const serializedBody: string = tuple[1];
     const signature: string = tuple[2];
 
-    const joinedContent: string = [
-        serializedHeader,
-        serializedBody,
-    ].join('.');
+    const joinedContent: string = formatEncryptedContentByContentStructure({
+        header: serializedHeader,
+        body: serializedBody,
+    });
 
     const signatureVerifier: SignatureVerifier = SignatureVerifier.instantiate(publicKey);
 
