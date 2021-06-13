@@ -11,10 +11,10 @@
 
 ```sh
 yarn add @sudoo/jwt
-yarn add @sudoo/token # Peer Dependency
+yarn add @sudoo/token @sudoo/jwt-config # Peer Dependency
 # Or
 npm install @sudoo/jwt --save
-npm install @sudoo/token --save # Peer Dependency
+npm install @sudoo/token @sudoo/jwt-config --save # Peer Dependency
 ```
 
 ## Creator Usage
