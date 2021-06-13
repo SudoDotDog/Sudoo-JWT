@@ -18,6 +18,9 @@
 	"peerDependencies": {
 		"@sudoo/token": "*"
 	},
+	"dependencies": {
+		"@sudoo/jwt-config": "latest"
+	},
 	"devDependencies": {
 		"@sudoo/io": "^1.8.0",
 		"@sudoo/token": "^1.6.0",
