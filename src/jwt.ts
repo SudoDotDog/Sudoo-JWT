@@ -4,28 +4,13 @@
  * @description JWT
  */
 
+import { deconstructJWTEnsure, extractJWTFixedHeader, JWTFixedHeader, JWTJoinedHeader, TokenTuple, verifyTokenPatternByTuple } from "@sudoo/jwt-config";
 import { SignatureVerifier } from "@sudoo/token";
-import { JWTCreateOptions, JWTFixedHeader, JWTJoinedHeader, JWTOptionalHeader, TokenTuple } from "./declare";
-import { fixNowDate, fixUndefinableDate } from "./util";
-
-export const deconstructJWT = (token: string): TokenTuple => {
-
-    const tuple: TokenTuple = token.split('.') as TokenTuple;
-
-    return tuple;
-};
-
-export const verifyTokenPatternByTuple = (tuple: TokenTuple): boolean => {
-
-    if (tuple.length !== 3) {
-        return false;
-    }
-    return true;
-};
+import { JWTCreateOptions } from "./declare";
 
 export const verifyTokenPatternByToken = (token: string): boolean => {
 
-    const tuple: TokenTuple = deconstructJWT(token);
+    const tuple: TokenTuple = deconstructJWTEnsure(token);
     return verifyTokenPatternByTuple(tuple);
 };
 
@@ -47,7 +32,7 @@ export const verifyTokenSignatureByTuple = (tuple: TokenTuple, publicKey: string
 
 export const verifyTokenSignatureByToken = (token: string, publicKey: string): boolean => {
 
-    const tuple: TokenTuple = deconstructJWT(token);
+    const tuple: TokenTuple = deconstructJWTEnsure(token);
     if (tuple.length !== 3) {
         return false;
     }
@@ -57,32 +42,7 @@ export const verifyTokenSignatureByToken = (token: string, publicKey: string): b
 
 export const extractJWTHeader = <Header extends Record<string, any>>(options: JWTCreateOptions<Header, any>): JWTJoinedHeader<Header> => {
 
-    const optionalHeaders: JWTOptionalHeader = {
-
-        aud: options.audience,
-        exp: fixUndefinableDate(options.expirationAt),
-        jti: options.identifier,
-        iat: fixNowDate(options.issuedAt),
-        iss: options.issuer,
-        nbf: fixUndefinableDate(options.availableAt),
-        sub: options.subject,
-        ver: options.version,
-    };
-
-    const keys: Array<keyof JWTOptionalHeader> = Object.keys(optionalHeaders) as Array<keyof JWTOptionalHeader>;
-    const fixedHeaders: JWTFixedHeader = keys.reduce((previous: JWTFixedHeader, currentKey: keyof JWTOptionalHeader) => {
-
-        if (typeof optionalHeaders[currentKey] !== 'undefined') {
-            return {
-                ...previous,
-                [currentKey]: optionalHeaders[currentKey],
-            };
-        }
-        return previous;
-    }, {
-        alg: 'RS256',
-        typ: 'JWT',
-    });
+    const fixedHeaders: JWTFixedHeader = extractJWTFixedHeader(options);
 
     return {
         ...fixedHeaders,

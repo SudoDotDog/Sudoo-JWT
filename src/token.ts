@@ -4,16 +4,15 @@
  * @description Token
  */
 
+import { deconstructJWTEnsure, fixUndefinableDate, JWTJoinedHeader, TokenTuple, verifyTokenPatternByTuple } from "@sudoo/jwt-config";
 import { deserializeObject } from "@sudoo/token";
-import { JWTJoinedHeader, TokenTuple } from "./declare";
-import { deconstructJWT, verifyTokenPatternByTuple, verifyTokenSignatureByTuple } from "./jwt";
-import { fixUndefinableDate } from "./util";
+import { verifyTokenSignatureByTuple } from "./jwt";
 
 export class JWTToken<Header extends Record<string, any> = any, Body extends Record<string, any> = any> {
 
     public static fromTokenOrNull<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string): JWTToken<Header, Body> | null {
 
-        const tuple: TokenTuple = deconstructJWT(token);
+        const tuple: TokenTuple = deconstructJWTEnsure(token);
 
         const surfaceVerifyResult: boolean = verifyTokenPatternByTuple(tuple);
         if (!surfaceVerifyResult) {
@@ -62,7 +61,7 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
 
         const confirmedTuple: TokenTuple = Array.isArray(tuple)
             ? tuple
-            : deconstructJWT(rawToken);
+            : deconstructJWTEnsure(rawToken);
 
         this._tuple = confirmedTuple;
 

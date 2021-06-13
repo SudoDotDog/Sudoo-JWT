@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /**
  * @author WMXPY
  * @namespace JWT
  * @description Creator
  */
 
+import { formatTokenByStructure, JWTJoinedHeader } from "@sudoo/jwt-config";
 import { serializeObject, SignatureCreator } from "@sudoo/token";
-import { JWTCreateOptions, JWTJoinedHeader } from "./declare";
+import { JWTCreateOptions } from "./declare";
 import { extractJWTBody, extractJWTHeader } from "./jwt";
 
 export class JWTCreator<Header extends Record<string, any> = any, Body extends Record<string, any> = any> {
@@ -39,11 +39,11 @@ export class JWTCreator<Header extends Record<string, any> = any, Body extends R
         const signatureCreator: SignatureCreator = SignatureCreator.instantiate(this._privateKey);
         const signature: string = signatureCreator.sign(joinedContent);
 
-        const jwtToken: string = [
-            serializedHeader,
-            serializedBody,
+        const jwtToken: string = formatTokenByStructure({
+            header: serializedHeader,
+            body: serializedBody,
             signature,
-        ].join('.');
+        });
 
         return jwtToken;
     }

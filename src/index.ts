@@ -8,5 +8,4 @@ export * from "./creator";
 export * from "./declare";
 export * from "./jwt";
 export * from "./token";
-export * from "./util";
 
