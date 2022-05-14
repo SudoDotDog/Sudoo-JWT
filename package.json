@@ -1,7 +1,7 @@
 {
 	"name": "@sudoo/jwt",
-	"version": "3.1.0",
-	"description": ":clap: JWT generator verifier for Node",
+	"version": "3.2.0",
+	"description": "JWT generator verifier for Node",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/SudoDotDog/Sudoo-JWT.git"
