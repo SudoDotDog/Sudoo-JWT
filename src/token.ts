@@ -145,4 +145,11 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
         }
         return fixedDate <= this._header.exp;
     }
+
+    public verifyTime(currentTime: Date = new Date()): boolean {
+
+        return this.verifyNotBefore(currentTime)
+            && this.verifyIssueDate(currentTime)
+            && this.verifyExpiration(currentTime);
+    }
 }
