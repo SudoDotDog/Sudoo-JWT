@@ -35,7 +35,6 @@ export class JWTToken<Header extends Record<string, any> = any, Body extends Rec
 
     public static fromTokenOrThrow<Header extends Record<string, any> = any, Body extends Record<string, any> = any>(token: string, error?: Error): JWTToken<Header, Body> {
 
-
         const instance: JWTToken<Header, Body> | null = JWTToken.fromTokenOrNull<Header, Body>(token);
 
         if (instance === null) {
