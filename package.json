@@ -1,6 +1,6 @@
 {
 	"name": "@sudoo/jwt",
-	"version": "3.3.0",
+	"version": "3.4.0",
 	"description": "JWT generator verifier for Node",
 	"repository": {
 		"type": "git",
@@ -22,8 +22,6 @@
 		"@sudoo/token": "*"
 	},
 	"devDependencies": {
-		"@sudoo/build-utils": "^1.0.0",
-		"@sudoo/license": "^2.1.0",
 		"@sudoo/token": "^1.6.1",
 		"@sudoo/triforce": "^3.10.1"
 	},
