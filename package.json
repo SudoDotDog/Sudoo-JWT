@@ -1,6 +1,7 @@
 {
 	"name": "@sudoo/jwt",
-	"version": "3.5.0",
+	"packageManager": "pnpm@11.2.2+sha512.36e6621fad506178936455e70247b8808ef4ec25797a9f437a93281a020484e2607f6a469a22e982987c3dbb8866e3071514ab10a4a1749e06edcd1ec118436f",
+	"version": "3.6.0",
 	"description": "JWT generator verifier for Node",
 	"repository": {
 		"type": "git",
@@ -15,6 +16,16 @@
 		"url": "https://github.com/SudoDotDog/Sudoo-JWT/issues"
 	},
 	"homepage": "https://github.com/SudoDotDog/Sudoo-JWT#readme",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist",
+		"LICENSE"
+	],
+	"scripts": {
+		"build": "tsc --p typescript/tsconfig.build.json",
+		"prepublishOnly": "pnpm run build"
+	},
 	"dependencies": {
 		"@sudoo/jwt-config": "^1.3.0"
 	},
@@ -22,7 +33,7 @@
 		"@sudoo/token": "*"
 	},
 	"devDependencies": {
-		"@sudoo/token": "^1.6.1",
+		"@sudoo/token": "^1.7.0",
 		"@sudoo/triforce": "^3.10.1"
 	},
 	"nyc": {
